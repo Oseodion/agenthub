@@ -11,8 +11,7 @@ const NAV_ITEMS = [
   { label: 'Browse', href: '/browse' },
   { label: 'My agent', href: '/agent' },
   { label: 'Payments', href: '/payments' },
-  { label: 'MCP', href: '/mcp' },
-]
+  { label: 'MCP', href: '/mcp-tools' },]
 
 export default function Header() {
   const pathname = usePathname()
@@ -154,7 +153,7 @@ export default function Header() {
             {address ? (
               <>
                 <div style={{ position: 'relative' }}>
-                  <div className="pill" style={{ color:'#999', cursor:'pointer', userSelect:'none', fontSize: isMobile ? 10 : 11, padding: isMobile ? '7px 12px' : '9px 22px', fontWeight:700, background:'#000', border:'1px solid #222', borderRadius:4, fontFamily:'var(--mono)', letterSpacing:'.5px', whiteSpace:'nowrap' }} onClick={() => setShowDropdown(p => !p)}>
+                  <div className="pill" style={{ color: '#999', cursor: 'pointer', userSelect: 'none', fontSize: isMobile ? 10 : 11, padding: isMobile ? '7px 12px' : '9px 22px', fontWeight: 700, background: '#000', border: '1px solid #222', borderRadius: 4, fontFamily: 'var(--mono)', letterSpacing: '.5px', whiteSpace: 'nowrap' }} onClick={() => setShowDropdown(p => !p)}>
                     {address.slice(0, 4)}…{address.slice(-3)} ▾
                   </div>
                   {showDropdown && (

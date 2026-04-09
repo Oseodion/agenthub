@@ -13,17 +13,7 @@ import { getAllJobs, createJob } from '@/lib/db'
 export async function GET() {
   try {
     const jobs = getAllJobs()
-    // Seed a test job from different address if empty
-    if (jobs.length === 0) {
-      createJob({
-        title: 'Test job from another agent',
-        description: 'Accept this to test the payment flow',
-        tags: ['TEST'],
-        reward: 0.1,
-        poster: '0x000000000000000000000000000000000000dead',
-      })
-    }
-    return NextResponse.json({ jobs: getAllJobs() })
+    return NextResponse.json({ jobs })
   } catch (err) {
     console.error('GET jobs error:', err)
     return NextResponse.json({ error: 'Failed to fetch jobs' }, { status: 500 })

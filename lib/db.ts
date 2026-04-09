@@ -125,11 +125,13 @@ export async function createTransaction(data: {
 }
 
 export async function getAllTransactions() {
+  await initDb()
   const result = await client.execute('SELECT * FROM transactions ORDER BY created_at DESC')
   return result.rows
 }
 
 export async function getTransactionsByAddress(address: string) {
+  await initDb()
   const result = await client.execute({
     sql: 'SELECT * FROM transactions WHERE from_address = ? OR to_address = ? ORDER BY created_at DESC',
     args: [address, address],

@@ -568,3 +568,12 @@ body {
     font-size: 20px !important;
   }
 }
+.star-dot {
+  animation-name: starPulse;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+}
+@keyframes starPulse {
+  0%, 100% { opacity: 0.05; }
+  50%       { opacity: 0.4; }
+}

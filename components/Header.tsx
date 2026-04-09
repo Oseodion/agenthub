@@ -131,8 +131,23 @@ export default function Header() {
 
       {/* HEADER */}
       <div style={{ position: 'relative', height: isMobile ? '56px' : '72px', borderBottom: '1px solid #1a1a1a' }}>
-        <div className="dot-grid" style={{ position: 'absolute', inset: 0, zIndex: 0 }} />
-        <div style={{ position: 'relative', zIndex: 200, height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: isMobile ? '0 14px' : '0 26px' }}>
+        <div style={{ position: 'absolute', inset: 0, zIndex: 0, pointerEvents: 'none', overflow: 'hidden' }}>
+          {[
+            { x: 8, y: 15, d: 6.2 }, { x: 22, y: 55, d: 8.1 }, { x: 35, y: 25, d: 7.0 }, { x: 48, y: 70, d: 9.3 },
+            { x: 62, y: 18, d: 6.8 }, { x: 75, y: 58, d: 8.5 }, { x: 85, y: 35, d: 7.2 }, { x: 92, y: 72, d: 9.0 },
+            { x: 15, y: 42, d: 8.0 }, { x: 55, y: 48, d: 6.5 },
+          ].map((s, i) => (
+            <div key={i} className="star-dot" style={{
+              position: 'absolute',
+              left: `${s.x}%`, top: `${s.y}%`,
+              width: '1px', height: '1px',
+              borderRadius: '50%',
+              background: '#ffffff',
+              animationDuration: `${s.d}s`,
+              animationDelay: `${(i * 0.5) % 4}s`,
+            }} />
+          ))}
+        </div>        <div style={{ position: 'relative', zIndex: 200, height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: isMobile ? '0 14px' : '0 26px' }}>
 
           <Link href="/" style={{ display: 'flex', alignItems: 'center', gap: isMobile ? 10 : 18, textDecoration: 'none' }}>
             <div style={{ width: isMobile ? 28 : 36, height: isMobile ? 28 : 36, border: '1px solid #222', borderRadius: 8, display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#000', flexShrink: 0 }}>

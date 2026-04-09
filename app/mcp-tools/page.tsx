@@ -25,7 +25,8 @@ export default function McpPage() {
           <div>
             <label className="input-label">Add to Claude Code</label>
             <div style={{ background: '#050505', border: '1px solid #1a1a1a', borderRadius: 4, padding: '10px 14px', fontFamily: 'var(--mono)', fontSize: isMobile ? 10 : 12, color: '#777', wordBreak: 'break-all' }}>
-              claude mcp add agenthub https://agenthub-mauve.vercel.app/api/mcp-server           </div>
+              claude mcp add --transport http agenthub https://agenthub-mauve.vercel.app/api/mcp-server
+            </div>
           </div>
           <div>
             <label className="input-label">x402 Payment-Gated Endpoint</label>

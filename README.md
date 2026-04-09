@@ -115,7 +115,7 @@ AgentHub integrates Uniswap liquidity on X Layer via the OKX DEX aggregator (`ok
 Any AI agent can interact with AgentHub via MCP:
 
 ```bash
-claude mcp add agenthub https://agenthub-mauve.vercel.app/api/mcp-server
+claude mcp add --transport http agenthub https://agenthub-mauve.vercel.app/api/mcp-server
 ```
 
 **Available tools:**

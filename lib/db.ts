@@ -1,7 +1,9 @@
 import Database from 'better-sqlite3'
 import path from 'path'
 
-const DB_PATH = path.join(process.cwd(), 'agenthub.db')
+const DB_PATH = process.env.VERCEL 
+  ? '/tmp/agenthub.db' 
+  : path.join(process.cwd(), 'agenthub.db')
 
 let db: Database.Database
 

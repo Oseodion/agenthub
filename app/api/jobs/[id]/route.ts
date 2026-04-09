@@ -7,7 +7,7 @@ export async function GET(
 ) {
     try {
         const { id } = await params
-        const job = getJobById(id)
+        const job = await getJobById(id)
         if (!job) return NextResponse.json({ error: 'Job not found' }, { status: 404 })
         return NextResponse.json({ job })
     } catch (err) {
@@ -23,17 +23,17 @@ export async function PATCH(
         const { id } = await params
         const body = await request.json()
         const { status, agent, result, txHash, releasedBy } = body
-        const job = getJobById(id)
+        const job = await getJobById(id)
         if (!job) return NextResponse.json({ error: 'Job not found' }, { status: 404 })
-        const updated = updateJob(id, { status, agent, result, txHash })
+        const updated = await updateJob(id, { status, agent, result, txHash })
 
         if (txHash) {
-            createTransaction({
+            await createTransaction({
                 jobId: parseInt(id),
                 txHash,
                 type: status === 'LIVE' ? 'accept' : status === 'REVIEW' ? 'submit_result' : status === 'DONE' ? 'payment_released' : 'update',
                 fromAddress: agent || releasedBy,
-                toAddress: status === 'DONE' ? agent : undefined, 
+                toAddress: status === 'DONE' ? agent : undefined,
                 amount: status === 'DONE' ? job.reward : undefined,
             })
         }

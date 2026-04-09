@@ -13,7 +13,7 @@ export async function GET(request: Request) {
     return NextResponse.json({ error: 'Job ID required' }, { status: 400 })
   }
 
-  const job = getJobById(jobId)
+  const job = await getJobById(jobId)  
   if (!job) {
     return NextResponse.json({ error: 'Job not found' }, { status: 404 })
   }

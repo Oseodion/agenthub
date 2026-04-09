@@ -1,23 +1,12 @@
-import Database from 'better-sqlite3'
-import path from 'path'
+import { createClient } from '@libsql/client'
 
-const DB_PATH = process.env.VERCEL 
-  ? '/tmp/agenthub.db' 
-  : path.join(process.cwd(), 'agenthub.db')
+const client = createClient({
+  url: process.env.TURSO_DATABASE_URL!,
+  authToken: process.env.TURSO_AUTH_TOKEN!,
+})
 
-let db: Database.Database
-
-export function getDb(): Database.Database {
-  if (!db) {
-    db = new Database(DB_PATH)
-    db.pragma('journal_mode = WAL')
-    initDb(db)
-  }
-  return db
-}
-
-function initDb(db: Database.Database) {
-  db.exec(`
+export async function initDb() {
+  await client.executeMultiple(`
     CREATE TABLE IF NOT EXISTS jobs (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       title TEXT NOT NULL,
@@ -33,7 +22,6 @@ function initDb(db: Database.Database) {
       created_at TEXT DEFAULT (datetime('now')),
       updated_at TEXT DEFAULT (datetime('now'))
     );
-
     CREATE TABLE IF NOT EXISTS transactions (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       job_id INTEGER,
@@ -50,19 +38,18 @@ function initDb(db: Database.Database) {
 
 // ── Job queries ────────────────────────────────────────
 
-export function getAllJobs() {
-  const db = getDb()
-  const rows = db.prepare('SELECT * FROM jobs ORDER BY created_at DESC').all()
-  return rows.map(parseJob)
+export async function getAllJobs() {
+  await initDb()
+  const result = await client.execute('SELECT * FROM jobs ORDER BY created_at DESC')
+  return result.rows.map(parseJob)
 }
 
-export function getJobById(id: string) {
-  const db = getDb()
-  const row = db.prepare('SELECT * FROM jobs WHERE id = ?').get(id)
-  return row ? parseJob(row) : null
+export async function getJobById(id: string) {
+  const result = await client.execute({ sql: 'SELECT * FROM jobs WHERE id = ?', args: [id] })
+  return result.rows.length > 0 ? parseJob(result.rows[0]) : null
 }
 
-export function createJob(data: {
+export async function createJob(data: {
   title: string
   description?: string
   tags?: string[]
@@ -71,29 +58,28 @@ export function createJob(data: {
   txHash?: string
   contractJobId?: string
 }) {
-  const db = getDb()
-  const result = db.prepare(`
-    INSERT INTO jobs (title, description, tags, reward, poster, tx_hash, contract_job_id)
-    VALUES (?, ?, ?, ?, ?, ?, ?)
-  `).run(
-    data.title,
-    data.description || '',
-    JSON.stringify(data.tags || []),
-    data.reward,
-    data.poster,
-    data.txHash || null,
-    data.contractJobId || null,
-  )
+  const result = await client.execute({
+    sql: `INSERT INTO jobs (title, description, tags, reward, poster, tx_hash, contract_job_id)
+          VALUES (?, ?, ?, ?, ?, ?, ?)`,
+    args: [
+      data.title,
+      data.description || '',
+      JSON.stringify(data.tags || []),
+      data.reward,
+      data.poster,
+      data.txHash || null,
+      data.contractJobId || null,
+    ],
+  })
   return getJobById(String(result.lastInsertRowid))
 }
 
-export function updateJob(id: string, data: {
+export async function updateJob(id: string, data: {
   status?: string
   agent?: string
   result?: string
   txHash?: string
 }) {
-  const db = getDb()
   const fields: string[] = []
   const values: any[] = []
 
@@ -105,13 +91,16 @@ export function updateJob(id: string, data: {
   fields.push("updated_at = datetime('now')")
   values.push(id)
 
-  db.prepare(`UPDATE jobs SET ${fields.join(', ')} WHERE id = ?`).run(...values)
+  await client.execute({
+    sql: `UPDATE jobs SET ${fields.join(', ')} WHERE id = ?`,
+    args: values,
+  })
   return getJobById(id)
 }
 
 // ── Transaction queries ────────────────────────────────
 
-export function createTransaction(data: {
+export async function createTransaction(data: {
   jobId?: number
   txHash: string
   type: string
@@ -120,31 +109,32 @@ export function createTransaction(data: {
   amount?: number
   blockNumber?: string
 }) {
-  const db = getDb()
-  db.prepare(`
-    INSERT INTO transactions (job_id, tx_hash, type, from_address, to_address, amount, block_number)
-    VALUES (?, ?, ?, ?, ?, ?, ?)
-  `).run(
-    data.jobId || null,
-    data.txHash,
-    data.type,
-    data.fromAddress || null,
-    data.toAddress || null,
-    data.amount || null,
-    data.blockNumber || null,
-  )
+  await client.execute({
+    sql: `INSERT INTO transactions (job_id, tx_hash, type, from_address, to_address, amount, block_number)
+          VALUES (?, ?, ?, ?, ?, ?, ?)`,
+    args: [
+      data.jobId || null,
+      data.txHash,
+      data.type,
+      data.fromAddress || null,
+      data.toAddress || null,
+      data.amount || null,
+      data.blockNumber || null,
+    ],
+  })
 }
 
-export function getAllTransactions() {
-  const db = getDb()
-  return db.prepare('SELECT * FROM transactions ORDER BY created_at DESC').all()
+export async function getAllTransactions() {
+  const result = await client.execute('SELECT * FROM transactions ORDER BY created_at DESC')
+  return result.rows
 }
 
-export function getTransactionsByAddress(address: string) {
-  const db = getDb()
-  return db.prepare(
-    'SELECT * FROM transactions WHERE from_address = ? OR to_address = ? ORDER BY created_at DESC'
-  ).all(address, address)
+export async function getTransactionsByAddress(address: string) {
+  const result = await client.execute({
+    sql: 'SELECT * FROM transactions WHERE from_address = ? OR to_address = ? ORDER BY created_at DESC',
+    args: [address, address],
+  })
+  return result.rows
 }
 
 // ── Helper ─────────────────────────────────────────────
@@ -153,7 +143,7 @@ function parseJob(row: any) {
   return {
     ...row,
     id: String(row.id),
-    tags: JSON.parse(row.tags || '[]'),
+    tags: JSON.parse((row.tags as string) || '[]'),
     reward: Number(row.reward),
   }
 }

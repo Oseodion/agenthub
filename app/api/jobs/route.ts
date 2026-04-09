@@ -1,18 +1,9 @@
 import { NextResponse } from 'next/server'
 import { getAllJobs, createJob } from '@/lib/db'
 
-// export async function GET() {
-//   try {
-//     const jobs = getAllJobs()
-//     return NextResponse.json({ jobs })
-//   } catch (err) {
-//     console.error('GET jobs error:', err)
-//     return NextResponse.json({ error: 'Failed to fetch jobs' }, { status: 500 })
-//   }
-// }
 export async function GET() {
   try {
-    const jobs = getAllJobs()
+    const jobs = await getAllJobs()
     return NextResponse.json({ jobs })
   } catch (err) {
     console.error('GET jobs error:', err)
@@ -29,7 +20,7 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Missing required fields' }, { status: 400 })
     }
 
-    const job = createJob({
+    const job = await createJob({
       title,
       description,
       tags: tags || [],

@@ -10,6 +10,7 @@
     "mcp": "npx tsx mcp/server.ts"
   },
   "dependencies": {
+    "@libsql/client": "^0.17.2",
     "@modelcontextprotocol/sdk": "^1.29.0",
     "@tanstack/react-query": "^5.96.2",
     "@types/better-sqlite3": "^7.6.13",

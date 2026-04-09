@@ -36,7 +36,7 @@ export default function Footer() {
                style={{ fontSize:10, color:'#666', paddingRight:14, borderRight:'1px solid #1a1a1a', marginRight:14, whiteSpace:'nowrap', textDecoration:'none' }}>
               Docs
             </a>
-            <a href="https://github.com" target="_blank" rel="noopener noreferrer" className="mono"
+            <a href="https://github.com/Oseodion/agenthub" target="_blank" rel="noopener noreferrer" className="mono"
                style={{ fontSize:10, color:'#666', paddingRight:14, borderRight:'1px solid #1a1a1a', marginRight:14, whiteSpace:'nowrap', textDecoration:'none' }}>
               GitHub
             </a>

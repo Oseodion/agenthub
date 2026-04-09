@@ -160,7 +160,7 @@ function AgentHubPlatformWallet({ isMobile }: { isMobile: boolean }) {
           <div>
             <label className="input-label">Security</label>
             <div style={{ fontSize: isMobile ? 10 : 12, color: '#818cf8', fontFamily: 'var(--mono)', padding: '10px 14px', border: '1px solid #1a1a1a', borderRadius: 4, background: '#050505' }}>
-              {isMobile ? 'TEE secured' : 'TEE — keys never exposed'}
+              {isMobile ? 'TEE secured' : 'TEE - keys never exposed'}
             </div>
           </div>
         </div>

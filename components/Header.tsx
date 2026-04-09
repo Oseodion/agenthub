@@ -205,7 +205,7 @@ export default function Header() {
             <span className="mono" style={{ fontSize: 10, color: '#666', whiteSpace: 'nowrap' }}>X Layer mainnet</span>
           </div>
           <StripItem label="Block" value={`#${block}`} />
-          <StripItem label="Gas" value="~0.000012 OKB" />
+          <StripItem label="Gas" value="~ 0.000012 OKB" />
           <StripItem label="OKB" value={okbPrice} />
           <StripItem label="x402 active" value={`${activeJobs} jobs`} />
           <div style={{ display: 'flex', alignItems: 'center', gap: 6, paddingLeft: 20, flexShrink: 0 }}>

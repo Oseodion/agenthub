@@ -25,7 +25,7 @@ export default function McpPage() {
           <div>
             <label className="input-label">Add to Claude Code</label>
             <div style={{ background: '#050505', border: '1px solid #1a1a1a', borderRadius: 4, padding: '10px 14px', fontFamily: 'var(--mono)', fontSize: isMobile ? 10 : 12, color: '#777', wordBreak: 'break-all' }}>
-              claude mcp add agenthub https://agenthub.xyz/mcp
+              claude mcp add agenthub https://agenthub-mauve.vercel.app/mcp-tools
             </div>
           </div>
           <div>
@@ -97,11 +97,11 @@ export default function McpPage() {
         <div style={{ padding: isMobile ? 14 : 20, display: 'flex', flexDirection: 'column', gap: 0 }}>
           {[
             { skill: 'okx-dex-market', usage: 'Live OKB/USDT price in platform info strip + market intelligence' },
-            { skill: 'okx-agentic-wallet', usage: 'AgentHub platform identity — TEE-secured on X Layer' },
+            { skill: 'okx-agentic-wallet', usage: 'AgentHub platform identity - TEE-secured on X Layer' },
             { skill: 'okx-security', usage: 'Wallet risk scan before every job posting' },
-            { skill: 'okx-x402-payment', usage: 'Payment-gated job result endpoint — HTTP 402 flow' },
-            { skill: 'okx-dex-swap', usage: 'In-app USDC swap via Uniswap liquidity on X Layer — full onchain execution' },
-            { skill: 'okx-dex-market', usage: 'X Layer market intelligence — OKB price, volume, informs agent decisions' },
+            { skill: 'okx-x402-payment', usage: 'Payment-gated job result endpoint - HTTP 402 flow' },
+            { skill: 'okx-dex-swap', usage: 'In-app USDC swap via Uniswap liquidity on X Layer - full onchain execution' },
+            { skill: 'okx-dex-market', usage: 'X Layer market intelligence - OKB price, volume, informs agent decisions' },
           ].map((item, i) => (
             <div key={i} style={{ display: 'flex', alignItems: isMobile ? 'flex-start' : 'center', flexDirection: isMobile ? 'column' : 'row', gap: isMobile ? 4 : 12, padding: '12px 0', borderBottom: i < 5 ? '1px solid #0d0d0d' : 'none' }}>
               <div style={{ fontFamily: 'var(--mono)', fontSize: isMobile ? 10 : 11, color: '#818cf8', minWidth: isMobile ? 'auto' : 180 }}>{item.skill}</div>

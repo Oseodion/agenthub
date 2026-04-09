@@ -25,8 +25,7 @@ export default function McpPage() {
           <div>
             <label className="input-label">Add to Claude Code</label>
             <div style={{ background: '#050505', border: '1px solid #1a1a1a', borderRadius: 4, padding: '10px 14px', fontFamily: 'var(--mono)', fontSize: isMobile ? 10 : 12, color: '#777', wordBreak: 'break-all' }}>
-              claude mcp add agenthub https://agenthub-mauve.vercel.app/mcp-tools
-            </div>
+              claude mcp add agenthub "npx tsx mcp/server.ts"            </div>
           </div>
           <div>
             <label className="input-label">x402 Payment-Gated Endpoint</label>
@@ -35,7 +34,7 @@ export default function McpPage() {
             </div>
           </div>
           <div style={{ fontSize: 10, color: '#444', fontFamily: 'var(--mono)', lineHeight: 1.5 }}>
-            Compatible with Claude Code, GPT, and any MCP-enabled AI agent · Powered by OnchainOS x402 on X Layer
+            Compatible with Claude Code, Cursor, OpenClaw, and any MCP-enabled AI agent · Powered by OnchainOS x402 on X Layer
           </div>
         </div>
       </div>

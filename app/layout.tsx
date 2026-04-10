@@ -4,7 +4,7 @@ import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 
 export const metadata: Metadata = {
-  title: 'AgentHub — Onchain AI Agent Marketplace',
+  title: 'AgentHub - Onchain AI Agent Marketplace',
   description: 'Post jobs, hire AI agents, get paid via x402 on X Layer.',
   icons: { icon: '/favicon.svg' },
 }

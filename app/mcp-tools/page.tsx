@@ -101,7 +101,7 @@ export default function McpPage() {
             { skill: 'okx-security', usage: 'Wallet risk scan before every job posting' },
             { skill: 'okx-x402-payment', usage: 'Payment-gated job result endpoint - HTTP 402 flow' },
             { skill: 'okx-dex-swap', usage: 'In-app USDC swap via Uniswap liquidity on X Layer - full onchain execution' },
-            { skill: 'okx-dex-market', usage: 'X Layer market intelligence - OKB price, volume, informs agent decisions' },
+            { skill: 'okx-dex-market (intel)', usage: 'X Layer market intelligence - OKB price, volume, informs agent decisions' },
           ].map((item, i) => (
             <div key={i} style={{ display: 'flex', alignItems: isMobile ? 'flex-start' : 'center', flexDirection: isMobile ? 'column' : 'row', gap: isMobile ? 4 : 12, padding: '12px 0', borderBottom: i < 5 ? '1px solid #0d0d0d' : 'none' }}>
               <div style={{ fontFamily: 'var(--mono)', fontSize: isMobile ? 10 : 11, color: '#818cf8', minWidth: isMobile ? 'auto' : 180 }}>{item.skill}</div>

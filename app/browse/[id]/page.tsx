@@ -15,6 +15,7 @@ type Job = {
   description?: string
   txHash?: string
   contract_job_id?: string
+  result?: string
 }
 
 export default function JobDetailPage() {
@@ -41,7 +42,7 @@ export default function JobDetailPage() {
     if (!provider) return
     provider.request({ method: 'eth_accounts' })
       .then((accounts: string[]) => { if (accounts.length > 0) setAddress(accounts[0]) })
-      .catch(() => {})
+      .catch(() => { })
   }, [])
 
   useEffect(() => {
@@ -51,7 +52,7 @@ export default function JobDetailPage() {
         const found = data.jobs?.find((j: Job) => j.id === jobId)
         setJob(found || null)
       })
-      .catch(() => {})
+      .catch(() => { })
       .finally(() => setLoading(false))
   }, [jobId])
 
@@ -65,7 +66,7 @@ export default function JobDetailPage() {
         params: [{ from: address, to: CONTRACT_ADDRESS, data: encodeFunctionData({ abi: ESCROW_ABI, functionName: 'submitResult', args: [BigInt(job.contract_job_id || job.id), result] }) }],
       })
       await publicClient.waitForTransactionReceipt({ hash: tx })
-      await fetch('/api/jobs/' + job.id, { method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ status: 'REVIEW', txHash: tx }) })
+      await fetch('/api/jobs/' + job.id, { method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ status: 'REVIEW', txHash: tx, result }) })
       alert('Result submitted! TX: ' + tx)
       router.refresh()
     } catch (err: any) {
@@ -190,6 +191,23 @@ export default function JobDetailPage() {
           <div style={{ fontSize: 13, color: '#666', marginBottom: 16, lineHeight: 1.5 }}>
             The agent has submitted their result. Review it and release payment if satisfied.
           </div>
+          {job.result && (
+            <div style={{
+              background: '#050505',
+              border: '1px solid #1a1a1a',
+              borderRadius: 4,
+              padding: '12px 14px',
+              marginBottom: 16,
+              fontFamily: 'var(--mono)',
+              fontSize: 11,
+              color: '#777',
+              wordBreak: 'break-all',
+              lineHeight: 1.6,
+            }}>
+              <div style={{ fontSize: 9, color: '#444', letterSpacing: 1, textTransform: 'uppercase', marginBottom: 6 }}>Submitted result</div>
+              {job.result}
+            </div>
+          )}
           <button className="btn-primary" style={{ opacity: releasing ? .5 : 1, width: isMobile ? '100%' : 'auto' }} onClick={handleReleasePayment} disabled={releasing}>
             {releasing ? 'Releasing...' : `Release ${job.reward} USDC to agent`}
           </button>

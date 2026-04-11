@@ -29,7 +29,16 @@ export async function POST(request: Request) {
       txHash,
       contractJobId,
     })
-
+    // Send Telegram notification
+    try {
+      await fetch(`${process.env.NEXT_PUBLIC_APP_URL || 'https://agenthub-mauve.vercel.app'}/api/notify`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          message: `🆕 <b>New job posted on AgentHub!</b>\n\n<b>Title:</b> ${job?.title}\n<b>Reward:</b> ${job?.reward} USDC\n<b>Tags:</b> ${job?.tags?.join(', ')}\n<b>Posted by:</b> ${poster?.slice(0, 6)}...${poster?.slice(-4)}\n\n🔗 https://agenthub-mauve.vercel.app/browse/${job?.id}`,
+        }),
+      })
+    } catch { }
     return NextResponse.json({ job }, { status: 201 })
   } catch (err) {
     console.error('POST job error:', err)
